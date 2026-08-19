@@ -147,10 +147,12 @@
     border: 1px solid var(--border);
     background-size: cover; background-position: center;
     display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
+    overflow: hidden; cursor: pointer;
     font-family: 'Segoe UI', system-ui, sans-serif;
     font-size: 20px; font-weight: 700; color: #0d0d0d;
+    transition: transform 0.3s ease;
   }
+  .case-avatar:hover { transform: scale(1.08); }
   .case-body { min-width: 0; }
   .case-name { font-size: 15.5px; font-weight: 700; color: var(--text); }
   .case-role { font-size: 11.5px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2px; display: block; }
@@ -170,8 +172,10 @@
     background-size: cover; background-position: center;
     display: flex; align-items: center; justify-content: center;
     font-family: 'Segoe UI', system-ui, sans-serif; font-size: 24px; font-weight: 700; color: #0d0d0d;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border); cursor: pointer;
+    transition: transform 0.3s ease;
   }
+  .team-avatar:hover { transform: scale(1.08); }
   .team-name { font-size: 18px; font-weight: 700; color: var(--text); }
   .team-role { font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; margin-top: 3px; display: block; }
   .team-row { margin-top: 14px; font-size: 13px; line-height: 1.6; }
@@ -191,6 +195,26 @@
   .contact-item span { font-size: 11px; color: var(--text-dim); display: block; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.8px; }
 
   footer { text-align: center; padding: 40px 0 60px; font-size: 12px; color: #444; opacity: 0; animation: fadeIn 1s 1s forwards; }
+
+  /* Lightbox for viewing full photo */
+  .lightbox-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+    display: none; align-items: center; justify-content: center;
+    z-index: 1000; padding: 24px; cursor: zoom-out;
+    animation: fadeIn 0.25s ease;
+  }
+  .lightbox-overlay.active { display: flex; }
+  .lightbox-overlay img {
+    max-width: 92vw; max-height: 88vh; border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    border: 1px solid var(--border);
+  }
+  .lightbox-close {
+    position: absolute; top: 24px; right: 32px; color: #fff;
+    font-size: 32px; cursor: pointer; line-height: 1; opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .lightbox-close:hover { opacity: 1; }
 
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
@@ -375,7 +399,7 @@
     <div class="cases-grid" id="casesGrid">
 
       <div class="case-card">
-        <div class="case-avatar" style="background:linear-gradient(135deg,#7CFF6B,#3ac93a); background-image:url('images/case-1.jpg')">ІК</div>
+        <div class="case-avatar" data-full="images/case-1.jpg" style="background:linear-gradient(135deg,#7CFF6B,#3ac93a); background-image:url('images/case-1.jpg')">ІК</div>
         <div class="case-body">
           <div class="case-name">Ім'я клієнта</div>
           <span class="case-role">Ніша / тип магазину</span>
@@ -391,7 +415,7 @@
       </div>
 
       <div class="case-card">
-        <div class="case-avatar" style="background:linear-gradient(135deg,#ffd66b,#e0a733); background-image:url('images/case-2.jpg')">ІК</div>
+        <div class="case-avatar" data-full="images/case-2.jpg" style="background:linear-gradient(135deg,#ffd66b,#e0a733); background-image:url('images/case-2.jpg')">ІК</div>
         <div class="case-body">
           <div class="case-name">Ім'я клієнта</div>
           <span class="case-role">Ніша / тип магазину</span>
@@ -407,7 +431,7 @@
       </div>
 
       <div class="case-card">
-        <div class="case-avatar" style="background:linear-gradient(135deg,#6bc8ff,#3389d6); background-image:url('images/case-3.jpg')">ІК</div>
+        <div class="case-avatar" data-full="images/case-3.jpg" style="background:linear-gradient(135deg,#6bc8ff,#3389d6); background-image:url('images/case-3.jpg')">ІК</div>
         <div class="case-body">
           <div class="case-name">Ім'я клієнта</div>
           <span class="case-role">Ніша / тип магазину</span>
@@ -423,7 +447,7 @@
       </div>
 
       <div class="case-card">
-        <div class="case-avatar" style="background:linear-gradient(135deg,#ff8a6b,#d64f33); background-image:url('images/case-4.jpg')">ІК</div>
+        <div class="case-avatar" data-full="images/case-4.jpg" style="background:linear-gradient(135deg,#ff8a6b,#d64f33); background-image:url('images/case-4.jpg')">ІК</div>
         <div class="case-body">
           <div class="case-name">Vadim</div>
           <span class="case-role">Baby products</span>
@@ -448,7 +472,7 @@
     <div class="team-grid" id="teamGrid">
 
       <div class="team-card">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#7CFF6B,#3ac93a); background-image:url('images/team-1.jpg')">ІК</div>
+        <div class="team-avatar" data-full="images/team-1.jpg" style="background:linear-gradient(135deg,#7CFF6B,#3ac93a); background-image:url('images/team-1.jpg')">ІК</div>
         <div class="team-name">Omelian-Tadei</div>
         <span class="team-role">Shopify developer </span>
         <div class="team-row">
@@ -463,7 +487,7 @@ for a way to combine my creativity, ideas, and opportunities, then the idea appe
       </div>
 
       <div class="team-card">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#6bc8ff,#3389d6); background-image:url('images/team-2.jpg')">ІК</div>
+        <div class="team-avatar" data-full="images/team-2.jpg" style="background:linear-gradient(135deg,#6bc8ff,#3389d6); background-image:url('images/team-2.jpg')">ІК</div>
         <div class="team-name">Olesia</div>
         <span class="team-role">SMM Shopify specialist</span>
         <div class="team-row">
@@ -508,6 +532,11 @@ for a way to combine my creativity, ideas, and opportunities, then the idea appe
     <p>© 2026 MR · Lviv, Ukraine</p>
   </div>
 </footer>
+
+<div class="lightbox-overlay" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <img id="lightboxImg" src="" alt="Full photo">
+</div>
 
 <script>
   const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
@@ -554,6 +583,23 @@ for a way to combine my creativity, ideas, and opportunities, then the idea appe
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+
+  // Lightbox: click any avatar photo to view it full-size
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  document.querySelectorAll('.case-avatar[data-full], .team-avatar[data-full]').forEach(el => {
+    el.addEventListener('click', () => {
+      lightboxImg.src = el.dataset.full;
+      lightbox.classList.add('active');
+    });
+  });
+
+  function closeLightbox() { lightbox.classList.remove('active'); lightboxImg.src=''; }
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 </script>
 
 </body>
