@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr. — Shopify</title>
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --bg-card: #131613;
+    --text: #e8e8e8;
+    --text-dim: #888;
+    --accent: #7CFF6B;
+    --border: #223022;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { color: var(--accent); text-decoration: none; transition: opacity 0.3s; }
+  a:hover { opacity: 0.8; }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px);} to { opacity:1; transform:translateY(0);} }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px);} to { opacity:1; transform:translateY(0);} }
+  @keyframes fadeIn { from { opacity: 0;} to { opacity:1;} }
+  @keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-6px);} }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeInDown 0.8s 0.05s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  .site-nav .container { display: flex; justify-content: center; gap: 14px; padding-top: 16px; padding-bottom: 16px; }
+  .nav-btn {
+    background: var(--bg-card); border: 1px solid var(--border); color: var(--text);
+    padding: 10px 26px; border-radius: 30px; font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1); display:inline-flex; align-items:center;
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,255,107,0.1); opacity:1; }
+
+  header { padding: 80px 0 50px; border-bottom: 1px solid var(--border); text-align: center; position: relative; overflow: hidden; }
+  header::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(124,255,107,0.04) 0%, transparent 50%);
+    animation: float 8s ease-in-out infinite; pointer-events: none;
+  }
+  header h1 {
+    font-size: 48px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 10px;
+    animation: fadeInDown 1s cubic-bezier(0.16,1,0.3,1) forwards; opacity: 0;
+    background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  header .subtitle { font-size: 17px; color: var(--text-dim); font-weight: 500; animation: fadeInDown 1s 0.15s cubic-bezier(0.16,1,0.3,1) forwards; opacity: 0; }
+  header .tags { margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  header .tags span {
+    background: var(--bg-card); border: 1px solid var(--border); padding: 6px 16px; border-radius: 20px;
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim);
+    opacity: 0; animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards; transition: all 0.3s ease; cursor: default;
+  }
+  header .tags span:nth-child(1){animation-delay:.3s;} header .tags span:nth-child(2){animation-delay:.4s;}
+  header .tags span:nth-child(3){animation-delay:.5s;} header .tags span:nth-child(4){animation-delay:.6s;}
+  header .tags span:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(124,255,107,0.1); }
+
+  section { padding: 60px 0; border-bottom: 1px solid var(--border); scroll-margin-top: 70px; }
+  section:last-of-type { border-bottom: none; }
+  h2 {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim);
+    margin-bottom: 24px; font-weight: 700; position: relative; display: inline-block;
+  }
+  h2::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.6s ease; }
+  h2.visible::after { width: 40px; }
+
+  .profile-text { font-size: 15.5px; color: #bbb; max-width: 720px; line-height: 1.7; }
+  .profile-text strong { color: var(--text); }
+
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .metric {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 20px;
+    text-align: center; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); position: relative; overflow: hidden;
+  }
+  .metric::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(124,255,107,0.04), transparent); transition: left 0.6s;
+  }
+  .metric:hover::before { left: 100%; }
+  .metric:hover { transform: translateY(-6px); border-color: #2f3a2f; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+  .metric-num { font-size: 36px; font-weight: 800; color: var(--accent); display: block; transition: transform 0.3s; }
+  .metric:hover .metric-num { transform: scale(1.1); }
+  .metric-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+
+  .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-tag {
+    background: var(--bg-card); border: 1px solid var(--border); padding: 7px 16px; border-radius: 6px;
+    font-size: 13px; color: #ccc; transition: all 0.3s cubic-bezier(0.16,1,0.3,1); cursor: default;
+    opacity: 0; transform: translateY(10px);
+  }
+  .skill-tag.visible { opacity: 1; transform: translateY(0); }
+  .skill-tag:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(124,255,107,0.08); }
+
+  .works-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .work-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(50px) scale(0.96);
+  }
+  .work-card.visible { opacity: 1; transform: translateY(0) scale(1); }
+  .work-card:hover { transform: translateY(-8px) scale(1.01); border-color: #2f3a2f; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .work-images { position: relative; width: 100%; aspect-ratio: 16/10; background: #111; overflow: hidden; display:flex; align-items:center; justify-content:center; }
+  .work-images .browser-mock { width:90%; height:80%; border:1px solid var(--border); border-radius:8px; background:#0f120f; position:relative; overflow:hidden; }
+  .work-images .browser-mock::before { content:''; position:absolute; top:0; left:0; right:0; height:22px; background:#161916; border-bottom:1px solid var(--border); }
+  .work-images .browser-mock::after { content:'● ● ●'; position:absolute; top:4px; left:10px; font-size:9px; letter-spacing:3px; color:#3a453a; }
+  .work-images .storefront-icon { position:absolute; inset:22px 0 0 0; display:flex; align-items:center; justify-content:center; }
+  .work-images .storefront-icon svg { width:64px; height:64px; stroke:var(--accent); opacity:.5; transition: transform .6s cubic-bezier(.16,1,.3,1), opacity .4s; }
+  .work-card:hover .storefront-icon svg { transform: scale(1.1); opacity:.85; }
+  .work-info { padding: 22px; }
+  .work-info h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; transition: color 0.3s; }
+  .work-card:hover .work-info h3 { color: var(--accent); }
+  .work-info .work-type { font-size: 12px; color: var(--accent); margin-bottom: 10px; display: block; font-weight: 500; }
+  .work-info p { font-size: 12.5px; color: var(--text-dim); line-height: 1.6; }
+
+  .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 44px; }
+  .case-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 26px; display: flex; gap: 18px; align-items: flex-start;
+    transition: all 0.5s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(40px);
+  }
+  .case-card.visible { opacity: 1; transform: translateY(0); }
+  .case-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 16px 50px rgba(124,255,107,0.06); }
+  .case-avatar {
+    width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;
+    border: 1px solid var(--border);
+    background-size: cover; background-position: center;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; cursor: pointer;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 20px; font-weight: 700; color: #0d0d0d;
+    transition: transform 0.3s ease;
+  }
+  .case-avatar:hover { transform: scale(1.08); }
+  .case-body { min-width: 0; }
+  .case-name { font-size: 15.5px; font-weight: 700; color: var(--text); }
+  .case-role { font-size: 11.5px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2px; display: block; }
+  .case-row { margin-top: 12px; font-size: 13px; line-height: 1.55; }
+  .case-row .case-label { color: var(--text-dim); text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.8px; display: block; margin-bottom: 3px; }
+  .case-row .case-text { color: #ccc; }
+
+  .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .team-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 30px; transition: all 0.5s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(40px);
+  }
+  .team-card.visible { opacity: 1; transform: translateY(0); }
+  .team-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 16px 50px rgba(124,255,107,0.06); }
+  .team-avatar {
+    width: 76px; height: 76px; border-radius: 50%; margin-bottom: 18px;
+    background-size: cover; background-position: center;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Segoe UI', system-ui, sans-serif; font-size: 24px; font-weight: 700; color: #0d0d0d;
+    border: 1px solid var(--border); cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  .team-avatar:hover { transform: scale(1.08); }
+  .team-name { font-size: 18px; font-weight: 700; color: var(--text); }
+  .team-role { font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; margin-top: 3px; display: block; }
+  .team-row { margin-top: 14px; font-size: 13px; line-height: 1.6; }
+  .team-row .team-label { color: var(--text-dim); text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.8px; display: block; margin-bottom: 3px; }
+  .team-row .team-text { color: #ccc; }
+
+  .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .contact-item {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 20px;
+    text-align: center; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(30px);
+  }
+  .contact-item.visible { opacity: 1; transform: translateY(0); }
+  .contact-item:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 12px 40px rgba(124,255,107,0.07); }
+  .contact-item .icon { font-size: 28px; margin-bottom: 12px; display: block; transition: transform 0.3s; }
+  .contact-item:hover .icon { transform: scale(1.2); }
+  .contact-item a { font-size: 14px; font-weight: 600; word-break: break-all; }
+  .contact-item span { font-size: 11px; color: var(--text-dim); display: block; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  footer { text-align: center; padding: 40px 0 60px; font-size: 12px; color: #444; opacity: 0; animation: fadeIn 1s 1s forwards; }
+
+  /* Lightbox for viewing full photo */
+  .lightbox-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+    display: none; align-items: center; justify-content: center;
+    z-index: 1000; padding: 24px; cursor: zoom-out;
+    animation: fadeIn 0.25s ease;
+  }
+  .lightbox-overlay.active { display: flex; }
+  .lightbox-overlay img {
+    max-width: 92vw; max-height: 88vh; border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    border: 1px solid var(--border);
+  }
+  .lightbox-close {
+    position: absolute; top: 24px; right: 32px; color: #fff;
+    font-size: 32px; cursor: pointer; line-height: 1; opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .lightbox-close:hover { opacity: 1; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+  @media (max-width: 768px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .works-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 34px; }
+    header { padding: 60px 0 40px; }
+    .nav-btn { padding: 9px 20px; font-size: 12px; }
+    .cases-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a class="nav-btn" href="index.html">← Home</a>
+    <button class="nav-btn" data-target="#works">Projects</button>
+    <button class="nav-btn" data-target="#team">Team</button>
+    <button class="nav-btn" data-target="#contact">Contacts</button>
+  </div>
+</nav>
+
+<header>
+  <div class="container">
+    <h1>MR</h1>
+    <p class="subtitle">Shopify Developer — Themes, Customization &amp; Store Setup</p>
+    <div class="tags">
+      <span>Liquid</span>
+      <span>Theme Customization</span>
+      <span>Store Setup</span>
+      <span>Apps &amp; Integrations</span>
+      <span>Conversion-Focused UX</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2 class="reveal">Profile</h2>
+    <p class="profile-text reveal reveal-delay-1">
+      I work on development and customization <strong>Shopify-магазинів</strong> — from setting up the theme and page structure to app integration and conversion optimization.
+      <br><br>
+      Working with <strong>Shopify</strong>, editing themes, setting up collections, checkout, and page loading speed. Comfortable with iterative feedback from the client and working with deadlines.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="reveal">Key Metrics</h2>
+    <div class="metrics">
+      <div class="metric reveal reveal-delay-1">
+        <span class="metric-num">+7</span>
+        <span class="metric-label">Stores launched</span>
+      </div>
+      <div class="metric reveal reveal-delay-2">
+        <span class="metric-num">+100</span>
+        <span class="metric-label">The theme is customized</span>
+      </div>
+      <div class="metric reveal reveal-delay-3">
+        <span class="metric-num">+100</span>
+        <span class="metric-label">Apps integrated</span>
+      </div>
+      <div class="metric reveal reveal-delay-4">
+        <span class="metric-num">2</span>
+        <span class="metric-label">Years of experience</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="reveal">Skills</h2>
+    <div class="skills-grid" id="skillsGrid">
+      <span class="skill-tag">Shopify Liquid</span>
+      <span class="skill-tag">Theme Customization</span>
+      <span class="skill-tag">Online Store 2.0</span>
+      <span class="skill-tag">HTML / CSS / JS</span>
+      <span class="skill-tag">Product & Collection Setup</span>
+      <span class="skill-tag">App Integrations</span>
+      <span class="skill-tag">Checkout & Payments Setup</span>
+      <span class="skill-tag">Page Speed Optimization</span>
+      <span class="skill-tag">SEO Basics</span>
+      <span class="skill-tag">Store Migration</span>
+    </div>
+  </div>
+</section>
+
+<section id="works">
+  <div class="container">
+    <h2 class="reveal">Selected Projects</h2>
+    <div class="works-grid">
+
+      <div class="work-card">
+        <div class="work-images">
+          <img src="images/project-1.jpg" alt="Lapi Books" style="width:100%; height:100%; object-fit:cover; object-position: top;">
+        </div>
+        <div class="work-info">
+          <h3>Lapi Books</h3>
+          <span class="work-type">Store Setup &amp; Theme Customization</span>
+          <p>An online bookstore built from scratch on Shopify — custom hero section, warm editorial styling, and a product grid tuned for browsing and quick discovery.</p>
+        </div>
+      </div>
+
+      <div class="work-card">
+        <div class="work-images">
+          <img src="images/project-2.jpg" alt="Dog Care" style="width:100%; height:100%; object-fit:cover; object-position: top;">
+        </div>
+        <div class="work-info">
+          <h3>Dog Care</h3>
+          <span class="work-type">Liquid Customization</span>
+          <p>A dark, cinematic pet-tech storefront with a custom full-bleed hero and moody atmosphere, coded with Liquid for a distinctive, non-template feel.</p>
+        </div>
+      </div>
+   <div class="work-card">
+        <div class="work-images">
+          <img src="images/project-3.jpg" alt="3D Car Parts" style="width:100%; height:100%; object-fit:cover; object-position: top;">
+        </div>
+        <div class="work-info">
+          <h3>3D Car Parts</h3>
+          <span class="work-type">Liquid Customization</span>
+          <p>A premium automotive parts store with a bold dark theme, custom navigation, and product presentation built to match the brand's high-end feel.</p>
+        </div>
+      </div>
+         <div class="work-card">
+        <div class="work-images">
+          <img src="images/project-4.jpg" alt="Foyer Lapi" style="width:100%; height:100%; object-fit:cover; object-position: top;">
+        </div>
+        <div class="work-info">
+          <h3>Foyer Lapi</h3>
+          <span class="work-type">Store Setup &amp; Theme Customization</span>
+          <p>A cozy home-goods store for handcrafted ceramic candles — warm, minimal layout with a custom hero banner and product grid built to feel calm and inviting.</p>
+        </div>
+      </div>
+      
+    </div>
+
+    <h2 class="reveal" style="margin-top:44px;">Client Cases</h2>
+    <div class="cases-grid" id="casesGrid">
+
+      <div class="case-card">
+        <div class="case-avatar" data-full="images/case-1.jpg" style="background:linear-gradient(135deg,#7CFF6B,#3ac93a); background-image:url('images/case-1.jpg')"></div>
+        <div class="case-body">
+          <div class="case-name">Ім'я клієнта</div>
+          <span class="case-role">Ніша / тип магазину</span>
+          <div class="case-row">
+            <span class="case-label">Проблема</span>
+            <span class="case-text">Опис проблеми клієнта — що не працювало або чого не вистачало.</span>
+          </div>
+          <div class="case-row">
+            <span class="case-label">Рішення</span>
+            <span class="case-text">Що було зроблено і який результат отримав клієнт.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-avatar" data-full="images/case-2.jpg" style="background:linear-gradient(135deg,#ffd66b,#e0a733); background-image:url('images/case-2.jpg')"></div>
+        <div class="case-body">
+          <div class="case-name">Ім'я клієнта</div>
+          <span class="case-role">Ніша / тип магазину</span>
+          <div class="case-row">
+            <span class="case-label">Проблема</span>
+            <span class="case-text">Опис проблеми клієнта — що не працювало або чого не вистачало.</span>
+          </div>
+          <div class="case-row">
+            <span class="case-label">Рішення</span>
+            <span class="case-text">Що було зроблено і який результат отримав клієнт.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-avatar" data-full="images/case-3.jpg" style="background:linear-gradient(135deg,#6bc8ff,#3389d6); background-image:url('images/case-3.jpg')"></div>
+        <div class="case-body">
+          <div class="case-name">Ім'я клієнта</div>
+          <span class="case-role">Ніша / тип магазину</span>
+          <div class="case-row">
+            <span class="case-label">Проблема</span>
+            <span class="case-text">Опис проблеми клієнта — що не працювало або чого не вистачало.</span>
+          </div>
+          <div class="case-row">
+            <span class="case-label">Рішення</span>
+            <span class="case-text">Що було зроблено і який результат отримав клієнт.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-avatar" data-full="images/case-4.jpg" style="background:linear-gradient(135deg,#ff8a6b,#d64f33); background-image:url('images/case-4.jpg')"></div>
+        <div class="case-body">
+          <div class="case-name">Vadim</div>
+          <span class="case-role">Baby products</span>
+          <div class="case-row">
+            <span class="case-label">Problem</span>
+            <span class="case-text">There's no scaling strategy</span>
+          </div>
+          <div class="case-row">
+            <span class="case-label">Solution</span>
+            <span class="case-text">A strategy was written that showed the client the main reason; the result went from 110% to 190%, and the average check increased.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="container">
+    <h2 class="reveal">Team</h2>
+    <div class="team-grid" id="teamGrid">
+
+      <div class="team-card">
+       <div class="team-avatar" data-full="images/team-1.jpg" style="background:linear-gradient(135deg,#7CFF6B,#3ac93a); background-image:url('images/team-1.jpg'); background-size: 195%; background-position: 52% 0%;"></div>
+        <div class="team-name">Omelian-Tadei</div>
+        <span class="team-role">Shopify developer </span>
+        <div class="team-row">
+          <span class="team-label">app and store development</span>
+          <span class="team-text">My area of responsibility is primarily creating turnkey Shopify stores. My role in projects plays a key part not just in building the store, but in providing solutions to customers' problems.</span>
+        </div>
+        <div class="team-row">
+          <span class="team-label">How I got into the field</span>
+          <span class="team-text">I had been looking for a long time  
+for a way to combine my creativity, ideas, and opportunities, then the idea appeared, and after that, the team</span>
+        </div>
+      </div>
+
+      <div class="team-card">
+     <div class="team-avatar" data-full="images/team-2.jpg" style="background:linear-gradient(135deg,#6bc8ff,#3389d6); background-image:url('images/team-2.jpg'); background-size: 166%; background-position: 59% 48%;"></div>
+        <span class="team-role">SMM Shopify specialist</span>
+        <div class="team-row">
+          <span class="team-label">runs a blog</span>
+          <span class="team-text">Responsibility area: running a blog with beautiful creatives.</span>
+        </div>
+        <div class="team-row">
+          <span class="team-label">got interested in the idea</span>
+          <span class="team-text">This person got interested in the idea because they believed that everything could work out</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <h2 class="reveal">Contact</h2>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <span class="icon">📧</span>
+        <a href="mailto:omeljanpadovcky@gmail.com">omeljanpadovcky@gmail.com</a>
+        <span>Email</span>
+      </div>
+      <div class="contact-item">
+        <span class="icon">💬</span>
+        <a href="https://www.linkedin.com/in/omelian-padovsky-996565311/">LinkedIn</a>
+        <span>LinkedIn</span>
+      </div>
+      <div class="contact-item">
+        <span class="icon">🛍️</span>
+        <a href="#">Shopify Partners</a>
+        <span>Профіль</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 MR · Lviv, Ukraine</p>
+  </div>
+</footer>
+
+<div class="lightbox-overlay" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <img id="lightboxImg" src="" alt="Full photo">
+</div>
+
+<script>
+  const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        if (entry.target.id === 'skillsGrid') {
+          const tags = entry.target.querySelectorAll('.skill-tag');
+          tags.forEach((tag, i) => setTimeout(() => tag.classList.add('visible'), i * 60));
+        }
+        if (entry.target.classList.contains('works-grid')) {
+          const cards = entry.target.querySelectorAll('.work-card');
+          cards.forEach((card, i) => setTimeout(() => card.classList.add('visible'), i * 120));
+        }
+        if (entry.target.id === 'casesGrid') {
+          const cases = entry.target.querySelectorAll('.case-card');
+          cases.forEach((card, i) => setTimeout(() => card.classList.add('visible'), i * 120));
+        }
+        if (entry.target.id === 'teamGrid') {
+          const members = entry.target.querySelectorAll('.team-card');
+          members.forEach((card, i) => setTimeout(() => card.classList.add('visible'), i * 120));
+        }
+        if (entry.target.classList.contains('contact-grid')) {
+          const items = entry.target.querySelectorAll('.contact-item');
+          items.forEach((item, i) => setTimeout(() => item.classList.add('visible'), i * 150));
+        }
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal, h2, .metric, #skillsGrid, .works-grid, #casesGrid, #teamGrid, .contact-grid').forEach(el => observer.observe(el));
+
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const header = document.querySelector('header');
+    if (header) header.style.transform = `translateY(${scrolled * 0.15}px)`;
+  });
+
+  const navButtons = document.querySelectorAll('.nav-btn[data-target]');
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.querySelector(btn.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Lightbox: click any avatar photo to view it full-size
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  document.querySelectorAll('.case-avatar[data-full], .team-avatar[data-full]').forEach(el => {
+    el.addEventListener('click', () => {
+      lightboxImg.src = el.dataset.full;
+      lightbox.classList.add('active');
+    });
+  });
+
+  function closeLightbox() { lightbox.classList.remove('active'); lightboxImg.src=''; }
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+
+</body>
+</html>
