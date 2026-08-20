@@ -88,6 +88,9 @@
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
   }
   .nav-btn:hover {
     border-color: var(--accent);
@@ -419,14 +422,15 @@
   }
 </style>
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="container">
     <a class="nav-btn" href="index.html" style="display:inline-flex;align-items:center;text-decoration:none;">← Home</a>
-    <button class="nav-btn" data-target="#works">Works</button>
-    <button class="nav-btn" data-target="#contact">Contacts</button>
+    <a class="nav-btn" href="#works">Works</a>
+    <a class="nav-btn" href="#contact">Contacts</a>
   </div>
 </nav>
 
@@ -675,13 +679,14 @@
     }
   });
 
-  // Nav buttons: smooth scroll + active state highlighting
-  const navButtons = document.querySelectorAll('.nav-btn');
-  const navTargets = Array.from(navButtons).map(btn => document.querySelector(btn.dataset.target));
+  // Nav links: smooth scroll + active state highlighting
+  const navLinks = document.querySelectorAll('.nav-btn[href^="#"]');
+  const navTargets = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href')));
 
-  navButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = document.querySelector(btn.dataset.target);
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
@@ -691,8 +696,8 @@
       const idx = navTargets.indexOf(entry.target);
       if (idx === -1) return;
       if (entry.isIntersecting) {
-        navButtons.forEach(b => b.classList.remove('active'));
-        navButtons[idx].classList.add('active');
+        navLinks.forEach(b => b.classList.remove('active'));
+        navLinks[idx].classList.add('active');
       }
     });
   }, { root: null, rootMargin: '-40% 0px -55% 0px', threshold: 0 });
