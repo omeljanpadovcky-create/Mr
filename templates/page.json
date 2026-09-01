@@ -1,0 +1,268 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "hero_JPQPmW": {
+      "type": "hero",
+      "blocks": {
+        "text_kpcfgw": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Where Art Meets Imagination</h2>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "h1",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_74DRrJ": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Every piece we craft tells a story. Handpicked designs, unmatched detail, built for those who dare to dream.</p>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 32,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_9wxKdX": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Explore our world",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_kpcfgw",
+        "text_74DRrJ",
+        "button_9wxKdX"
+      ],
+      "name": "t:names.hero",
+      "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/photo_2026-08-30_21-14-45.jpg",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "large",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "toggle_overlay": true,
+        "overlay_color": "#00000026",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
+    "blocks_Brh8Cx": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_c7a3ca8_iUh3nL": {
+          "type": "ai_gen_block_c7a3ca8",
+          "settings": {
+            "timeline_items": 5,
+            "item_1_date": "2019",
+            "item_1_title": "First encounter with 3D",
+            "item_1_description": "At IT academy",
+            "item_2_date": "2020",
+            "item_2_title": "Acquiring skills",
+            "item_2_description": "I was looking for skills all over the internet",
+            "item_3_date": "2022",
+            "item_3_title": "The beginning of a dream",
+            "item_3_description": "Search, search, and search again, \nI always told myself",
+            "item_4_date": "2025",
+            "item_4_title": "Сombination of skills",
+            "item_4_description": "First introduction to Shopify",
+            "item_5_date": "2026",
+            "item_5_title": "I, you, burned and burn",
+            "item_5_description": "If you are burning with a dream, \nThen burn with it to victory",
+            "item_6_date": "",
+            "item_6_title": "",
+            "item_6_description": "",
+            "item_7_date": "",
+            "item_7_title": "",
+            "item_7_description": "",
+            "item_8_date": "",
+            "item_8_title": "",
+            "item_8_description": "",
+            "item_9_date": "",
+            "item_9_title": "",
+            "item_9_description": "",
+            "item_10_date": "",
+            "item_10_title": "",
+            "item_10_description": "",
+            "desktop_width_percent": 80,
+            "section_padding": 40,
+            "item_spacing": 60,
+            "timeline_offset": 40,
+            "content_offset": 25,
+            "line_width": 2,
+            "line_color": "#e6e6e6",
+            "line_active_color": "#174f19",
+            "dot_size": 16,
+            "dot_border_width": 2,
+            "dot_color": "#ffffff",
+            "dot_active_color": "#174f19",
+            "dot_scale": 120,
+            "inactive_opacity": 40,
+            "date_size": 14,
+            "date_color": "#666666",
+            "date_active_color": "#174f19",
+            "title_size": 22,
+            "title_color": "#333333",
+            "title_active_color": "#000000",
+            "description_size": 15,
+            "description_color": "#666666",
+            "description_active_color": "#333333"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_c7a3ca8_iUh3nL"
+      ],
+      "name": "Vertical timeline",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "hero_JPQPmW",
+    "blocks_Brh8Cx"
+  ]
+}
